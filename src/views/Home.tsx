@@ -1,12 +1,13 @@
 import { Container, Grid, Typography } from "@mui/material";
 import * as React from "react";
 import millify from "millify";
-import { Statistic } from "../components";
+import { Statistic, SectionHeading } from "../components";
 import { useGetCryptosQuery } from "../services/criptoApi";
+import { Cryptocurrencies, News } from ".";
 interface HomeProps {}
 
 const Home: React.FunctionComponent<HomeProps> = () => {
-  const { isFetching, data } = useGetCryptosQuery(null);
+  const { isFetching, data } = useGetCryptosQuery(10);
   const [stats, setStats] = React.useState(data?.data?.stats);
 
   React.useEffect(() => {
@@ -56,14 +57,20 @@ const Home: React.FunctionComponent<HomeProps> = () => {
         </Grid>
       </Container>
       <Container sx={{ my: 4 }} maxWidth="lg">
-        <Typography variant="h4" component="h2">
-          Top 10 Cryptocurrencies
-        </Typography>
+        <SectionHeading
+          title="Top 10 Cryptocurrencies"
+          navigateTo="/cryptocurrencies"
+          message="crypto"
+        />
+        <Cryptocurrencies minimal fullWidth />
       </Container>
       <Container sx={{ my: 4 }} maxWidth="lg">
-        <Typography variant="h4" component="h2">
-          Top News
-        </Typography>
+        <SectionHeading
+          title="Latest Crypto News"
+          navigateTo="/news"
+          message="news"
+        />
+        <News />
       </Container>
     </React.Fragment>
   );
