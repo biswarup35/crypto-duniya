@@ -11,9 +11,7 @@ import {
 const APP = () => {
   return (
     <>
-      {/* Main navigation */}
       <Navbar />
-      {/* Pages */}
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
