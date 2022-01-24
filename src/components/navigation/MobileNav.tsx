@@ -38,7 +38,7 @@ const MobileNav: React.FunctionComponent<MobileNavProps> = ({
             <ListItemButton
               onClick={close}
               component={Link}
-              to="/criptocurrencies"
+              to="/cryptocurrencies"
             >
               <ListItemIcon>
                 <CurrencyRupeeOutlinedIcon />

@@ -26,7 +26,7 @@ const Navbar: React.FunctionComponent<NavbarProps> = () => {
   }, [open]);
   return (
     <React.Fragment>
-      <AppBar color="transparent">
+      <AppBar color="default">
         <Toolbar variant="dense">
           {sm && (
             <IconButton onClick={openToggle}>
@@ -44,7 +44,7 @@ const Navbar: React.FunctionComponent<NavbarProps> = () => {
                 endIcon={<CurrencyRupeeOutlinedIcon />}
                 sx={{ textTransform: "none" }}
                 component={Link}
-                to="/criptocurrencies"
+                to="/cryptocurrencies"
               >
                 Criptocurrencies
               </Button>
