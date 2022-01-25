@@ -70,7 +70,7 @@ const Home: React.FunctionComponent<HomeProps> = () => {
           navigateTo="/news"
           message="news"
         />
-        <News />
+        <News minimal fullWidth />
       </Container>
     </React.Fragment>
   );
