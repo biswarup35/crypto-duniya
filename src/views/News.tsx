@@ -8,21 +8,33 @@ import {
   Container,
   Grid,
   Typography,
+  Box,
+  FormControl,
+  Select,
+  MenuItem,
+  useMediaQuery,
+  Theme,
 } from "@mui/material";
 import moment from "moment";
 import * as React from "react";
 import { useGetCryptoNewsQuery } from "../services/newsApi";
+import { useGetCryptosQuery } from "../services/criptoApi";
 interface NewsProps {
   minimal?: boolean;
   fullWidth?: boolean;
 }
 
 const News: React.FunctionComponent<NewsProps> = ({ minimal, fullWidth }) => {
+  const [newsCategory, setNewsCategory] = React.useState("cryptocurrency");
   const { isFetching, data: { value = [] } = {} } = useGetCryptoNewsQuery({
-    newsCategory: "cryptocurrency",
-    count: 10,
+    newsCategory,
+    count: 12,
   });
+  const { data: { data: { coins = [] } = {} } = {} } = useGetCryptosQuery(100);
   const [newsList, setNewsList] = React.useState<[]>(value);
+
+  const title = newsCategory.charAt(0).toUpperCase() + newsCategory.slice(1);
+  const sm = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
 
   React.useEffect(() => {
     setNewsList(value);
@@ -33,6 +45,38 @@ const News: React.FunctionComponent<NewsProps> = ({ minimal, fullWidth }) => {
   }
   return (
     <Container sx={{ my: 2 }} maxWidth="xl">
+      {!minimal && (
+        <Box
+          sx={{ my: 2 }}
+          display="flex"
+          flexDirection={sm ? "column" : "row"}
+          gap={2}
+        >
+          <Typography
+            sx={{ flexGrow: 1 }}
+            variant="h6"
+            component="h2"
+            align={sm ? "center" : "left"}
+          >
+            News about {title}
+          </Typography>
+          <FormControl sx={{ minWidth: 240 }}>
+            <Select
+              size="small"
+              id="coin-select"
+              value={newsCategory}
+              onChange={(event) => setNewsCategory(event.target.value)}
+            >
+              <MenuItem value="cryptocurrency">Cryptocurrency</MenuItem>
+              {coins?.map((coin: { uuid: string; name: string }) => (
+                <MenuItem key={coin.uuid} value={coin.name}>
+                  {coin.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+      )}
       <Grid container spacing={2}>
         {newsList?.map((news: any) => (
           <Grid
@@ -74,7 +118,7 @@ const News: React.FunctionComponent<NewsProps> = ({ minimal, fullWidth }) => {
                   {news?.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {news?.description.length > 100
+                  {news?.description.length > 80
                     ? `${news?.description.substring(0, 80)}...`
                     : news?.description}
                 </Typography>
