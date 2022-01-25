@@ -35,7 +35,7 @@ const Navbar: React.FunctionComponent<NavbarProps> = () => {
           )}
           <Box flexGrow={1}>
             <Button sx={{ textTransform: "none" }} component={Link} to="/">
-              Cripto Duniya
+              Crypto Duniya
             </Button>
           </Box>
           {!sm && (
@@ -46,7 +46,7 @@ const Navbar: React.FunctionComponent<NavbarProps> = () => {
                 component={Link}
                 to="/cryptocurrencies"
               >
-                Criptocurrencies
+                Cryptocurrencies
               </Button>
               <Button
                 endIcon={<CurrencyExchangeOutlinedIcon />}
