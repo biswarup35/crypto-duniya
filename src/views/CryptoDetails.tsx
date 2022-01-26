@@ -1,3 +1,4 @@
+import * as React from "react";
 import {
   Avatar,
   Box,
@@ -14,9 +15,10 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { Sparklines, SparklinesCurve, SparklinesSpots } from "react-sparklines";
 import millify from "millify";
 import HTMLReactParser from "html-react-parser";
-import * as React from "react";
 import { useParams } from "react-router-dom";
 import { useGetCryptoDetailsQuery } from "../services/criptoApi";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
@@ -30,39 +32,56 @@ import ShopOutlinedIcon from "@mui/icons-material/ShopOutlined";
 import ThumbsUpDownOutlinedIcon from "@mui/icons-material/ThumbsUpDownOutlined";
 import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
 
+import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
+import ThumbDownAltOutlinedIcon from "@mui/icons-material/ThumbDownAltOutlined";
+
+import ArrowDropUpOutlinedIcon from "@mui/icons-material/ArrowDropUpOutlined";
+import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
+
+const getSign = (number: number) =>
+  number > 0 ? (
+    <ArrowDropUpOutlinedIcon fontSize="small" htmlColor="green" />
+  ) : (
+    <ArrowDropDownOutlinedIcon fontSize="small" htmlColor="red" />
+  );
+
 interface CriptoDetailsProps {}
 
 const CriptoDetails: React.FunctionComponent<CriptoDetailsProps> = () => {
   const sm = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
+  const theme = useTheme();
+
   const { id } = useParams();
   const { isFetching, data: { data: { coin = {} } = {} } = {} } =
     useGetCryptoDetailsQuery(id);
+
+  const iconColor = coin?.color ?? theme.palette.primary.main;
 
   const stats = [
     {
       title: "Price to USD",
       value: `${millify(coin?.price ?? 0)}`,
-      icon: <MonetizationOnOutlinedIcon />,
+      icon: <MonetizationOnOutlinedIcon htmlColor={iconColor} />,
     },
     {
       title: "Rank",
       value: `${coin?.rank}`,
-      icon: <BarChartOutlinedIcon />,
+      icon: <BarChartOutlinedIcon htmlColor={iconColor} />,
     },
     {
       title: "24h Volume",
       value: `${millify(coin?.[`24hVolume`] ?? 0)}`,
-      icon: <OfflineBoltOutlinedIcon />,
+      icon: <OfflineBoltOutlinedIcon htmlColor={iconColor} />,
     },
     {
       title: "Market Cap",
       value: `${millify(coin?.marketCap ?? 0)}`,
-      icon: <SecurityOutlinedIcon />,
+      icon: <SecurityOutlinedIcon htmlColor={iconColor} />,
     },
     {
-      title: "All-time high(daily avg.)",
+      title: "All-time high",
       value: `${millify(coin?.allTimeHigh?.price ?? 0)}`,
-      icon: <InsightsOutlinedIcon />,
+      icon: <InsightsOutlinedIcon htmlColor={iconColor} />,
     },
   ];
 
@@ -70,27 +89,31 @@ const CriptoDetails: React.FunctionComponent<CriptoDetailsProps> = () => {
     {
       title: "Number of Markets",
       value: coin?.numberOfMarkets ?? 0,
-      icon: <ShopTwoOutlinedIcon />,
+      icon: <ShopTwoOutlinedIcon htmlColor={iconColor} />,
     },
     {
       title: "Number of Exchanges",
       value: coin?.numberOfExchanges ?? 0,
-      icon: <ShopOutlinedIcon />,
+      icon: <ShopOutlinedIcon htmlColor={iconColor} />,
     },
     {
       title: "Approved Supply",
-      value: coin?.supply?.confirmed ?? false,
-      icon: <ThumbsUpDownOutlinedIcon />,
+      value: coin?.supply?.confirmed ? (
+        <ThumbUpAltOutlinedIcon htmlColor="green" fontSize="small" />
+      ) : (
+        <ThumbDownAltOutlinedIcon htmlColor="red" fontSize="small" />
+      ),
+      icon: <ThumbsUpDownOutlinedIcon htmlColor={iconColor} />,
     },
     {
       title: "Total Supply",
       value: millify(coin?.supply?.total ?? 0),
-      icon: <InventoryOutlinedIcon />,
+      icon: <InventoryOutlinedIcon htmlColor={iconColor} />,
     },
     {
       title: "Circulating Supply",
       value: millify(coin?.supply?.circulating ?? 0),
-      icon: <InventoryOutlinedIcon />,
+      icon: <InventoryOutlinedIcon htmlColor={iconColor} />,
     },
   ];
 
@@ -104,8 +127,9 @@ const CriptoDetails: React.FunctionComponent<CriptoDetailsProps> = () => {
         <Stack sx={{ my: 2 }} direction="column" alignItems="center">
           <Box display="flex" alignItems="center" gap={3}>
             <Avatar src={coin.iconUrl} />
-            <Typography variant="h5" component="h2">
-              {`${coin.name} (${coin.symbol})`}
+            <Typography variant={sm ? "h6" : "h5"} component="h2">
+              {`${coin.name} (${coin.symbol}) ${coin?.change}`}
+              {getSign(coin?.change)}
             </Typography>
           </Box>
           <Typography
@@ -127,9 +151,9 @@ const CriptoDetails: React.FunctionComponent<CriptoDetailsProps> = () => {
           gap={sm ? 2 : 4}
           direction={sm ? "column" : "row"}
         >
-          <Paper variant="outlined">
+          <Paper sx={{ minWidth: 300 }} variant="outlined">
             <Typography
-              sx={{ my: 1 }}
+              sx={{ py: 1 }}
               align="center"
             >{`${coin.name} value Stats`}</Typography>
             <Divider />
@@ -150,9 +174,9 @@ const CriptoDetails: React.FunctionComponent<CriptoDetailsProps> = () => {
               ))}
             </List>
           </Paper>
-          <Paper variant="outlined">
+          <Paper sx={{ minWidth: 300 }} variant="outlined">
             <Typography
-              sx={{ my: 1 }}
+              sx={{ py: 1 }}
               align="center"
             >{`${coin.name} other Stats`}</Typography>
             <Divider />
@@ -174,10 +198,24 @@ const CriptoDetails: React.FunctionComponent<CriptoDetailsProps> = () => {
             </List>
           </Paper>
         </Stack>
+        <Paper sx={{ mt: 2 }} variant="outlined">
+          <Typography
+            sx={{ my: 1 }}
+            align="center"
+          >{`${coin.name} Price Trend`}</Typography>
+          <Divider sx={{ mb: 2 }} />
+          <Sparklines data={coin.sparkline} limit={27}>
+            <SparklinesCurve
+              color={coin?.color ?? theme.palette.primary.main}
+              style={{ strokeWidth: 0.5 }}
+            />
+            <SparklinesSpots size={1} />
+          </Sparklines>
+        </Paper>
         <Divider sx={{ mt: 4 }} />
         <Grid sx={{ my: 1 }} container spacing={4}>
           <Grid item xs={12} sm={7} md={8}>
-            <Typography variant="h6" component="h2">
+            <Typography sx={{ fontWeight: 600 }} variant="h6" component="h2">
               What is {coin.name}?
             </Typography>
             <Typography>{HTMLReactParser(coin.description)}</Typography>
