@@ -89,7 +89,7 @@ const CriptoDetails: React.FunctionComponent<CriptoDetailsProps> = () => {
   const stats = [
     {
       title: "Price to USD",
-      value: `${millify(coin?.price ?? 0)}`,
+      value: `${millify(coin?.price ?? 0, { precision: 3 })}`,
       icon: <MonetizationOnOutlinedIcon htmlColor={iconColor} />,
     },
     {
@@ -157,7 +157,7 @@ const CriptoDetails: React.FunctionComponent<CriptoDetailsProps> = () => {
           <Box display="flex" alignItems="center" gap={3}>
             <Avatar src={coin.iconUrl} />
             <Typography variant={sm ? "h6" : "h5"} component="h2">
-              {`${coin.name} (${coin.symbol}) ${coin?.change}`}
+              {`${coin.name} (${coin.symbol}) ${coin?.change}%`}
               {getSign(coin?.change)}
             </Typography>
           </Box>
@@ -227,11 +227,16 @@ const CriptoDetails: React.FunctionComponent<CriptoDetailsProps> = () => {
             </List>
           </Paper>
         </Stack>
-        <Paper sx={{ mt: 2 }} variant="outlined">
+        <Paper sx={{ mt: 3 }} variant="outlined">
           <Stack sx={{ py: 1 }} direction="row" alignItems="center">
-            <Typography
-              sx={{ flexGrow: 1, pl: 1 }}
-            >{`${coin.name} Price Trend`}</Typography>
+            <Typography sx={{ flexGrow: 1, pl: 1 }}>
+              {`$${millify(coin.price, {
+                precision: 5,
+              })}`}
+              <sup
+                style={{ color: coin.change > 0 ? "green" : "red" }}
+              >{`(${coin.change}%)`}</sup>
+            </Typography>
             <FormControl sx={{ minWidth: 100, pr: 1 }}>
               <Select
                 size="small"
