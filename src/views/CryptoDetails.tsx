@@ -4,12 +4,15 @@ import {
   Box,
   Container,
   Divider,
+  FormControl,
   Grid,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
+  MenuItem,
   Paper,
+  Select,
   Stack,
   Theme,
   Typography,
@@ -20,7 +23,10 @@ import { Sparklines, SparklinesCurve, SparklinesSpots } from "react-sparklines";
 import millify from "millify";
 import HTMLReactParser from "html-react-parser";
 import { useParams } from "react-router-dom";
-import { useGetCryptoDetailsQuery } from "../services/criptoApi";
+import {
+  useGetCryptoDetailsQuery,
+  useGetCryptoHistoryQuery,
+} from "../services/criptoApi";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import InsightsOutlinedIcon from "@mui/icons-material/InsightsOutlined";
@@ -45,15 +51,38 @@ const getSign = (number: number) =>
     <ArrowDropDownOutlinedIcon fontSize="small" htmlColor="red" />
   );
 
+const time = [
+  { value: "3h", title: "3 Hours" },
+  { value: "24h", title: "24 Hours" },
+  { value: "7d", title: "7 Days" },
+  { value: "30d", title: "30 Days" },
+  { value: "3m", title: "3 Months" },
+  { value: "1y", title: "1 Year" },
+  { value: "3y", title: "3 Years" },
+  { value: "5y", title: "5 Years" },
+];
+
 interface CriptoDetailsProps {}
 
 const CriptoDetails: React.FunctionComponent<CriptoDetailsProps> = () => {
   const sm = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
   const theme = useTheme();
 
+  const [timeperiod, setTimeperiod] = React.useState("24h");
+
   const { id } = useParams();
   const { isFetching, data: { data: { coin = {} } = {} } = {} } =
     useGetCryptoDetailsQuery(id);
+
+  const { data: { data: { history = [] } = {} } = {} } =
+    useGetCryptoHistoryQuery({
+      timeperiod,
+      id,
+    });
+
+  const sparklineData = history
+    ?.map((data: { price: string }) => data.price)
+    .reverse();
 
   const iconColor = coin?.color ?? theme.palette.primary.main;
 
@@ -151,7 +180,7 @@ const CriptoDetails: React.FunctionComponent<CriptoDetailsProps> = () => {
           gap={sm ? 2 : 4}
           direction={sm ? "column" : "row"}
         >
-          <Paper sx={{ minWidth: 300 }} variant="outlined">
+          <Paper sx={{ flexGrow: 1 }} variant="outlined">
             <Typography
               sx={{ py: 1 }}
               align="center"
@@ -174,7 +203,7 @@ const CriptoDetails: React.FunctionComponent<CriptoDetailsProps> = () => {
               ))}
             </List>
           </Paper>
-          <Paper sx={{ minWidth: 300 }} variant="outlined">
+          <Paper sx={{ flexGrow: 1 }} variant="outlined">
             <Typography
               sx={{ py: 1 }}
               align="center"
@@ -199,12 +228,27 @@ const CriptoDetails: React.FunctionComponent<CriptoDetailsProps> = () => {
           </Paper>
         </Stack>
         <Paper sx={{ mt: 2 }} variant="outlined">
-          <Typography
-            sx={{ my: 1 }}
-            align="center"
-          >{`${coin.name} Price Trend`}</Typography>
+          <Stack sx={{ py: 1 }} direction="row" alignItems="center">
+            <Typography
+              sx={{ flexGrow: 1, pl: 1 }}
+            >{`${coin.name} Price Trend`}</Typography>
+            <FormControl sx={{ minWidth: 100, pr: 1 }}>
+              <Select
+                size="small"
+                value={timeperiod}
+                id="time-select"
+                onChange={(event) => setTimeperiod(event.target.value)}
+              >
+                {time.map(({ value, title }) => (
+                  <MenuItem key={value} value={value}>
+                    {title}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Stack>
           <Divider sx={{ mb: 2 }} />
-          <Sparklines data={coin.sparkline} limit={27}>
+          <Sparklines data={sparklineData ?? coin?.sparkline}>
             <SparklinesCurve
               color={coin?.color ?? theme.palette.primary.main}
               style={{ strokeWidth: 0.5 }}
