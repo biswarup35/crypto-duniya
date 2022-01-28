@@ -1,4 +1,4 @@
-import { Navbar } from "./components";
+import { Navbar, Footer } from "./components";
 import { Routes, Route } from "react-router-dom";
 import {
   Home,
@@ -11,8 +11,8 @@ import {
 const APP = () => {
   return (
     <>
-      <Navbar />
       <main>
+        <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="cryptocurrencies">
@@ -24,7 +24,7 @@ const APP = () => {
         </Routes>
       </main>
       {/* Footer section */}
-      <footer></footer>
+      <Footer />
     </>
   );
 };

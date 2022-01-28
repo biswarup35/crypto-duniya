@@ -1,4 +1,5 @@
 import ReactDom from "react-dom";
+import "./index.css";
 import { BrowserRouter as Router } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { Provider } from "react-redux";
