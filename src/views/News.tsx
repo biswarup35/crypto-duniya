@@ -19,6 +19,7 @@ import moment from "moment";
 import * as React from "react";
 import { useGetCryptoNewsQuery } from "../services/newsApi";
 import { useGetCryptosQuery } from "../services/criptoApi";
+import { Loading } from "../components";
 interface NewsProps {
   minimal?: boolean;
   fullWidth?: boolean;
@@ -41,7 +42,7 @@ const News: React.FunctionComponent<NewsProps> = ({ minimal, fullWidth }) => {
   }, [value]);
 
   if (isFetching) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
   return (
     <Container sx={{ my: 2 }} maxWidth="lg">

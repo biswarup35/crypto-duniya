@@ -18,6 +18,7 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
+import { Loading } from "../components";
 import { useTheme } from "@mui/material/styles";
 import { Sparklines, SparklinesCurve, SparklinesSpots } from "react-sparklines";
 import millify from "millify";
@@ -147,7 +148,7 @@ const CriptoDetails: React.FunctionComponent<CriptoDetailsProps> = () => {
   ];
 
   if (isFetching) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   return (

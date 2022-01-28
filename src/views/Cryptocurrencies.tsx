@@ -16,6 +16,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { Loading } from "../components";
 interface CryptocurrenciesProps {
   minimal?: boolean;
   fullWidth?: boolean;
@@ -38,7 +39,7 @@ const Cryptocurrencies: React.FunctionComponent<CryptocurrenciesProps> = ({
     setCryptos(filtered);
   }, [coins, searchTerm]);
   if (isFetching) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
   return (
     <Container sx={{ my: 2 }} maxWidth={!fullWidth ? "lg" : false}>
