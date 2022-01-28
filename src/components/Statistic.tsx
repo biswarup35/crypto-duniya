@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Paper } from "@mui/material";
 import * as React from "react";
 interface StatisticProps {
   title: string;
@@ -10,11 +10,17 @@ const Statistic: React.FunctionComponent<StatisticProps> = ({
   value,
 }) => {
   return (
-    <Box>
-      <Typography variant="h5" color="GrayText" component="h2" gutterBottom>
+    <Box sx={{ p: 1 }} component={Paper} variant="outlined">
+      <Typography
+        align="center"
+        variant="h5"
+        color="text.secondary"
+        component="h2"
+        gutterBottom
+      >
         {title}
       </Typography>
-      <Typography variant="h6" component="h2">
+      <Typography align="center" variant="h6" component="h2">
         {value}
       </Typography>
     </Box>
