@@ -7,12 +7,8 @@ import { Cryptocurrencies, News } from ".";
 interface HomeProps {}
 
 const Home: React.FunctionComponent<HomeProps> = () => {
-  const { isFetching, data } = useGetCryptosQuery(10);
-  const [stats, setStats] = React.useState(data?.data?.stats);
-
-  React.useEffect(() => {
-    setStats(data?.data?.stats);
-  }, [data, stats]);
+  const { isFetching, data: { data: { stats = {} } = {} } = {} } =
+    useGetCryptosQuery(10);
 
   if (isFetching) {
     return <Loading />;

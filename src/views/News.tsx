@@ -27,19 +27,15 @@ interface NewsProps {
 
 const News: React.FunctionComponent<NewsProps> = ({ minimal, fullWidth }) => {
   const [newsCategory, setNewsCategory] = React.useState("cryptocurrency");
-  const { isFetching, data: { value = [] } = {} } = useGetCryptoNewsQuery({
-    newsCategory,
-    count: 12,
-  });
+  const { isFetching, data: { value: newsList = [] } = {} } =
+    useGetCryptoNewsQuery({
+      newsCategory,
+      count: 12,
+    });
   const { data: { data: { coins = [] } = {} } = {} } = useGetCryptosQuery(100);
-  const [newsList, setNewsList] = React.useState<[]>(value);
 
   const title = newsCategory.charAt(0).toUpperCase() + newsCategory.slice(1);
   const sm = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
-
-  React.useEffect(() => {
-    setNewsList(value);
-  }, [value]);
 
   if (isFetching) {
     return <Loading />;
