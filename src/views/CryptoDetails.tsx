@@ -18,6 +18,8 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
+import { red, green } from "@mui/material/colors";
+
 import { Loading } from "../components";
 import { useTheme } from "@mui/material/styles";
 import { Sparklines, SparklinesCurve, SparklinesSpots } from "react-sparklines";
@@ -47,9 +49,9 @@ import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined
 
 const getSign = (number: number) =>
   number > 0 ? (
-    <ArrowDropUpOutlinedIcon fontSize="small" htmlColor="green" />
+    <ArrowDropUpOutlinedIcon fontSize="small" htmlColor={green[600]} />
   ) : (
-    <ArrowDropDownOutlinedIcon fontSize="small" htmlColor="red" />
+    <ArrowDropDownOutlinedIcon fontSize="small" htmlColor={red[500]} />
   );
 
 const time = [
@@ -232,11 +234,14 @@ const CriptoDetails: React.FunctionComponent<CriptoDetailsProps> = () => {
           <Stack sx={{ py: 1 }} direction="row" alignItems="center">
             <Typography sx={{ flexGrow: 1, pl: 1 }}>
               {`$${millify(coin.price, {
-                precision: 5,
+                precision: 3,
               })}`}
-              <sup
-                style={{ color: coin.change > 0 ? "green" : "red" }}
-              >{`(${coin.change}%)`}</sup>
+              <Typography
+                sx={{ ml: 0.5 }}
+                component="sup"
+                variant="caption"
+                style={{ color: coin.change >= 0 ? green[600] : red[500] }}
+              >{`(${coin.change}%)`}</Typography>
             </Typography>
             <FormControl sx={{ minWidth: 100, pr: 1 }}>
               <Select
@@ -256,8 +261,8 @@ const CriptoDetails: React.FunctionComponent<CriptoDetailsProps> = () => {
           <Divider sx={{ mb: 2 }} />
           <Sparklines data={sparklineData ?? coin?.sparkline}>
             <SparklinesCurve
-              color={coin?.color ?? theme.palette.primary.main}
-              style={{ strokeWidth: 0.5 }}
+              color={coin?.change >= 0 ? `${green[600]}` : `${red[500]}`}
+              style={{ strokeWidth: 0.5, fill: "none" }}
             />
             <SparklinesSpots size={1} />
           </Sparklines>
