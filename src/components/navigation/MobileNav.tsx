@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   Box,
   Drawer,
@@ -22,11 +22,16 @@ const MobileNav: React.FunctionComponent<MobileNavProps> = ({
   open,
   close,
 }) => {
+  const { pathname } = useLocation();
   return (
     <Drawer open={open} onClose={close}>
       <Box sx={{ width: 240 }} component="nav">
         <List disablePadding>
-          <ListItem disablePadding component="li">
+          <ListItem
+            selected={pathname === "/" ? true : false}
+            disablePadding
+            component="li"
+          >
             <ListItemButton onClick={close} component={Link} to="/">
               <ListItemIcon>
                 <HomeOutlinedIcon />
@@ -34,7 +39,11 @@ const MobileNav: React.FunctionComponent<MobileNavProps> = ({
               <ListItemText primary="Home" />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding component="li">
+          <ListItem
+            selected={pathname === "/cryptocurrencies" ? true : false}
+            disablePadding
+            component="li"
+          >
             <ListItemButton
               onClick={close}
               component={Link}
@@ -46,7 +55,11 @@ const MobileNav: React.FunctionComponent<MobileNavProps> = ({
               <ListItemText primary="Criptocurrencies" />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding component="li">
+          <ListItem
+            selected={pathname === "/exchanges" ? true : false}
+            disablePadding
+            component="li"
+          >
             <ListItemButton onClick={close} component={Link} to="/exchanges">
               <ListItemIcon>
                 <CurrencyExchangeOutlinedIcon />
@@ -54,7 +67,11 @@ const MobileNav: React.FunctionComponent<MobileNavProps> = ({
               <ListItemText primary="Exchanges" />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding component="li">
+          <ListItem
+            selected={pathname === "/news" ? true : false}
+            disablePadding
+            component="li"
+          >
             <ListItemButton onClick={close} component={Link} to="/news">
               <ListItemIcon>
                 <NewspaperOutlinedIcon />
