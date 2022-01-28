@@ -18,6 +18,7 @@ import CurrencyExchangeOutlinedIcon from "@mui/icons-material/CurrencyExchangeOu
 import CurrencyRupeeOutlinedIcon from "@mui/icons-material/CurrencyRupeeOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MobileNav from "./navigation/MobileNav";
+import Logo from "../icons/Logo";
 interface NavbarProps {}
 
 const Navbar: React.FunctionComponent<NavbarProps> = () => {
@@ -27,6 +28,10 @@ const Navbar: React.FunctionComponent<NavbarProps> = () => {
   const openToggle = React.useCallback(() => {
     setOpen(!open);
   }, [open]);
+  const props = {
+    true: { display: "flex", justifyContent: "center" },
+    false: {},
+  };
   return (
     <React.Fragment>
       <AppBar color="inherit" elevation={0}>
@@ -37,16 +42,15 @@ const Navbar: React.FunctionComponent<NavbarProps> = () => {
                 <MenuOutlinedIcon />
               </IconButton>
             )}
-            <Box flexGrow={1}>
-              <Button sx={{ textTransform: "none" }} component={Link} to="/">
-                Crypto Duniya
-              </Button>
+            <Box {...props[`${sm}`]} flexGrow={1}>
+              <Link to="/">
+                <Logo />
+              </Link>
             </Box>
             {!sm && (
               <Stack direction="row" alignItems="center" gap={2}>
                 <Button
                   endIcon={<CurrencyRupeeOutlinedIcon />}
-                  sx={{ textTransform: "none" }}
                   component={Link}
                   variant={
                     pathname === "/cryptocurrencies" ? "outlined" : "text"
@@ -57,7 +61,6 @@ const Navbar: React.FunctionComponent<NavbarProps> = () => {
                 </Button>
                 <Button
                   endIcon={<CurrencyExchangeOutlinedIcon />}
-                  sx={{ textTransform: "none" }}
                   component={Link}
                   variant={pathname === "/exchanges" ? "outlined" : "text"}
                   to="/exchanges"
@@ -66,7 +69,6 @@ const Navbar: React.FunctionComponent<NavbarProps> = () => {
                 </Button>
                 <Button
                   endIcon={<NewspaperOutlinedIcon />}
-                  sx={{ textTransform: "none" }}
                   component={Link}
                   variant={pathname === "/news" ? "outlined" : "text"}
                   to="/news"
