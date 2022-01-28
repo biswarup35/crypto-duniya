@@ -52,7 +52,7 @@ const MobileNav: React.FunctionComponent<MobileNavProps> = ({
               <ListItemIcon>
                 <MonetizationOnOutlinedIcon />
               </ListItemIcon>
-              <ListItemText primary="Criptocurrencies" />
+              <ListItemText primary="Cryptocurrencies" />
             </ListItemButton>
           </ListItem>
           <ListItem
