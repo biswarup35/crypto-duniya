@@ -15,6 +15,7 @@ import {
   Theme,
   Stack,
 } from "@mui/material";
+import { useLocation } from "react-router-dom";
 import moment from "moment";
 import * as React from "react";
 import { useGetCryptoNewsQuery } from "../services/newsApi";
@@ -37,11 +38,22 @@ const News: React.FunctionComponent<NewsProps> = ({ minimal, fullWidth }) => {
   const title = newsCategory.charAt(0).toUpperCase() + newsCategory.slice(1);
   const sm = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
 
+  const { pathname } = useLocation();
+  const path = pathname === "/";
+  const containerProp = {
+    true: { paddingLeft: 0, paddingRight: 0 },
+    false: {},
+  };
+
   if (isFetching) {
     return <Loading />;
   }
   return (
-    <Container sx={{ my: 2 }} maxWidth="lg">
+    <Container
+      style={{ ...containerProp[`${path}`] }}
+      sx={{ my: 2 }}
+      maxWidth="lg"
+    >
       {!minimal && (
         <Box
           sx={{ my: 2 }}

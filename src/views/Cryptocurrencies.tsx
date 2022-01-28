@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import millify from "millify";
 import { useGetCryptosQuery } from "../services/criptoApi";
 import {
@@ -32,6 +32,13 @@ const Cryptocurrencies: React.FunctionComponent<CryptocurrenciesProps> = ({
   const [cryptos, setCryptos] = React.useState<[]>(coins);
   const [searchTerm, setSearchTerm] = React.useState("");
 
+  const { pathname } = useLocation();
+  const path = pathname === "/";
+  const containerProp = {
+    true: { paddingLeft: 0, paddingRight: 0 },
+    false: {},
+  };
+
   React.useEffect(() => {
     const filtered = coins.filter((coin: { name: string }) =>
       coin.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -42,7 +49,11 @@ const Cryptocurrencies: React.FunctionComponent<CryptocurrenciesProps> = ({
     return <Loading />;
   }
   return (
-    <Container sx={{ my: 2 }} maxWidth={!fullWidth ? "lg" : false}>
+    <Container
+      style={{ ...containerProp[`${path}`] }}
+      sx={{ my: 2 }}
+      maxWidth={!fullWidth ? "lg" : false}
+    >
       {!minimal && (
         <Stack sx={{ my: 4 }}>
           <TextField
