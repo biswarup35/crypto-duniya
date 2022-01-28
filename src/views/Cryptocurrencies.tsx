@@ -12,9 +12,9 @@ import {
   Divider,
   Grid,
   List,
-  ListItem,
   Stack,
   TextField,
+  Typography,
 } from "@mui/material";
 interface CryptocurrenciesProps {
   minimal?: boolean;
@@ -46,7 +46,7 @@ const Cryptocurrencies: React.FunctionComponent<CryptocurrenciesProps> = ({
         <Stack sx={{ my: 4 }}>
           <TextField
             size="small"
-            placeholder="Search..."
+            placeholder="Search coin..."
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </Stack>
@@ -54,7 +54,7 @@ const Cryptocurrencies: React.FunctionComponent<CryptocurrenciesProps> = ({
       <Grid container spacing={2}>
         {cryptos?.map((crypto: any) => (
           <Grid key={crypto.uuid} item xs={12} sm={6} md={4} lg={3}>
-            <Card>
+            <Card variant="outlined">
               <CardActionArea
                 component={Link}
                 to={`/cryptocurrencies/${crypto.uuid}`}
@@ -62,18 +62,33 @@ const Cryptocurrencies: React.FunctionComponent<CryptocurrenciesProps> = ({
                 <CardHeader
                   title={crypto.name}
                   subheader={`Rank #${crypto.rank}`}
-                  avatar={<Avatar src={crypto.iconUrl} alt={crypto.name} />}
+                  avatar={
+                    <Avatar
+                      sx={{ height: 28, width: 28 }}
+                      src={crypto.iconUrl}
+                      alt={crypto.name}
+                    />
+                  }
                 />
                 <Divider />
                 <CardContent>
                   <List>
-                    <ListItem>Price: ${millify(crypto.price ?? 0)}</ListItem>
-                    <ListItem>
-                      Market Cap: ${millify(crypto.marketCap ?? 0)}
-                    </ListItem>
-                    <ListItem>
-                      Daily change: {millify(crypto.change ?? 0)}
-                    </ListItem>
+                    <Stack sx={{ mx: 2 }} direction="row" component="li">
+                      <Typography sx={{ flexGrow: 1 }}>Price</Typography>
+                      <Typography>{`${millify(crypto.price ?? 0, {
+                        precision: 3,
+                      })}`}</Typography>
+                    </Stack>
+                    <Stack sx={{ mx: 2, my: 1 }} direction="row" component="li">
+                      <Typography sx={{ flexGrow: 1 }}>Market Cap</Typography>
+                      <Typography>{millify(crypto.marketCap ?? 0)}</Typography>
+                    </Stack>
+                    <Stack sx={{ mx: 2 }} direction="row" component="li">
+                      <Typography sx={{ flexGrow: 1 }}>Daily change</Typography>
+                      <Typography>{`${millify(
+                        crypto.change ?? 0
+                      )}%`}</Typography>
+                    </Stack>
                   </List>
                 </CardContent>
               </CardActionArea>
