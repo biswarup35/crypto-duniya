@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import NewspaperOutlinedIcon from "@mui/icons-material/NewspaperOutlined";
 import CurrencyExchangeOutlinedIcon from "@mui/icons-material/CurrencyExchangeOutlined";
-import CurrencyRupeeOutlinedIcon from "@mui/icons-material/CurrencyRupeeOutlined";
+import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 interface MobileNavProps {
   open: boolean;
@@ -50,7 +50,7 @@ const MobileNav: React.FunctionComponent<MobileNavProps> = ({
               to="/cryptocurrencies"
             >
               <ListItemIcon>
-                <CurrencyRupeeOutlinedIcon />
+                <MonetizationOnOutlinedIcon />
               </ListItemIcon>
               <ListItemText primary="Criptocurrencies" />
             </ListItemButton>

@@ -15,7 +15,7 @@ import { useMediaQuery } from "@mui/material";
 
 import NewspaperOutlinedIcon from "@mui/icons-material/NewspaperOutlined";
 import CurrencyExchangeOutlinedIcon from "@mui/icons-material/CurrencyExchangeOutlined";
-import CurrencyRupeeOutlinedIcon from "@mui/icons-material/CurrencyRupeeOutlined";
+import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MobileNav from "./navigation/MobileNav";
 import Logo from "../icons/Logo";
@@ -50,7 +50,7 @@ const Navbar: React.FunctionComponent<NavbarProps> = () => {
             {!sm && (
               <Stack direction="row" alignItems="center" gap={2}>
                 <Button
-                  endIcon={<CurrencyRupeeOutlinedIcon />}
+                  endIcon={<MonetizationOnOutlinedIcon />}
                   component={Link}
                   variant={
                     pathname === "/cryptocurrencies" ? "outlined" : "text"
