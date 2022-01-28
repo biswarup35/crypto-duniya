@@ -3,7 +3,6 @@ import {
   Card,
   CardActionArea,
   CardContent,
-  CardHeader,
   CardMedia,
   Container,
   Grid,
@@ -14,6 +13,7 @@ import {
   MenuItem,
   useMediaQuery,
   Theme,
+  Stack,
 } from "@mui/material";
 import moment from "moment";
 import * as React from "react";
@@ -44,7 +44,7 @@ const News: React.FunctionComponent<NewsProps> = ({ minimal, fullWidth }) => {
     return <p>Loading...</p>;
   }
   return (
-    <Container sx={{ my: 2 }} maxWidth="xl">
+    <Container sx={{ my: 2 }} maxWidth="lg">
       {!minimal && (
         <Box
           sx={{ my: 2 }}
@@ -87,7 +87,7 @@ const News: React.FunctionComponent<NewsProps> = ({ minimal, fullWidth }) => {
             md={4}
             lg={!minimal ? 3 : false}
           >
-            <Card variant="outlined">
+            <Card sx={{ height: `100%` }} variant="outlined">
               <CardActionArea
                 component="a"
                 href={news?.url}
@@ -102,26 +102,33 @@ const News: React.FunctionComponent<NewsProps> = ({ minimal, fullWidth }) => {
                   width={479}
                 />
               </CardActionArea>
-              <CardHeader
-                avatar={
-                  <Avatar
-                    src={news?.provider[0]?.image?.thumbnail?.contentUrl}
-                  />
-                }
-                title={news?.provider[0]?.name}
-                subheader={moment(news?.datePublished)
-                  .startOf("seconds")
-                  .fromNow()}
-              />
+              <Stack sx={{ mt: 1, mx: 1 }} direction="row" gap={2}>
+                <Avatar
+                  sx={{ height: 24, width: 24 }}
+                  src={news?.provider[0]?.image?.thumbnail?.contentUrl}
+                />
+                <Box>
+                  <Typography variant="body1">
+                    {news?.provider[0]?.name}
+                  </Typography>
+                  <Typography variant="subtitle2">
+                    {moment(news?.datePublished).startOf("seconds").fromNow()}
+                  </Typography>
+                </Box>
+              </Stack>
               <CardContent>
                 <Typography variant="body1" component="h2" gutterBottom>
                   {news?.name}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {news?.description.length > 80
-                    ? `${news?.description.substring(0, 80)}...`
-                    : news?.description}
-                </Typography>
+                {news?.name.length <= 80 ? (
+                  <Typography variant="body2" color="text.secondary">
+                    {`${news?.description.substring(0, 80)}...`}
+                  </Typography>
+                ) : (
+                  <Typography variant="body2" color="text.secondary">
+                    {`${news?.description.substring(0, 40)}...`}
+                  </Typography>
+                )}
               </CardContent>
             </Card>
           </Grid>
